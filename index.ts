@@ -120,19 +120,3 @@ export class Youtube {
 
 }
 
-// const yt = new Youtube('AIzaSyDzpOSifvlHU5G_pL7lVRWAm50Z8KkrNz4');
-// // @ts-ignore
-// const videos: [videoDetails]= [];
-// if (yt){
-//     yt.channelDetails('UCWphVpAsuxyZLw-u9b5A3Gg');
-//     yt.videosList('UUWphVpAsuxyZLw-u9b5A3Gg', videos)
-//     const k = async () => {
-//         const c = await yt.videoInfo('JNXrTESNZUg')
-//         console.log(c)
-//
-//     }
-//     k()
-// }
-
-// console.log(youtube)
-// youtube.channelDetails();

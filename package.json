@@ -1,0 +1,28 @@
+{
+  "name": "tube-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./build/index.js",
+  "types": "./build/index.d.ts",
+  "files": [
+    "build/**/*"
+  ],
+  "scripts": {
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node-fetch": "^2.5.10",
+    "@typescript-eslint/eslint-plugin": "^4.22.0",
+    "@typescript-eslint/parser": "^4.22.0",
+    "eslint": "^7.24.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1",
+    "typescript": "^4.2.4"
+  },
+  "dependencies": {
+    "node-fetch": "^2.6.1"
+  }
+}

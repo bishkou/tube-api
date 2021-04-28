@@ -1,7 +1,7 @@
 {
   "name": "tube-api",
   "version": "1.0.0",
-  "description": "",
+  "description": "Youtube Api v3 Wrapper, Channel Details, Videos List and Video Details",
   "main": "./build/index.js",
   "types": "./build/index.d.ts",
   "files": [
@@ -10,9 +10,20 @@
   "scripts": {
     "build": "tsc"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "youtube",
+    "youtube-api",
+    "yt",
+    "ytube",
+    "youtube api wrapper",
+    "youtube channel",
+    "youtube video",
+    "youtube info",
+    "youtube details",
+    "youtube channel details"
+  ],
+  "author": "Chedy",
+  "license": "MIT",
   "devDependencies": {
     "@types/node-fetch": "^2.5.10",
     "@typescript-eslint/eslint-plugin": "^4.22.0",
@@ -24,5 +35,13 @@
   },
   "dependencies": {
     "node-fetch": "^2.6.1"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bishkou/tube-api"
+  },
+  "bugs": {
+    "url": "https://github.com/bishkou/tube-api/issues"
+  },
+  "homepage": "https://github.com/bishkou/tube-api"
 }

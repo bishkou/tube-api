@@ -3,23 +3,25 @@ import fetch from 'node-fetch';
 import { contentDetails } from './interfaces/contentDetails-interface';
 import { listDetails  } from './interfaces/listDetails-interface';
 import { channelDetails } from './interfaces/channelDetails-interface';
-import {videoDetails} from "./interfaces/videoDetails-interface";
+import { videoDetails } from "./interfaces/videoDetails-interface";
 
+
+/**
+ * @param {string} key The YouTube Data API v3 key to use
+ */
 export class Youtube {
-    CHANNELS_URL = 'https://www.googleapis.com/youtube/v3/channels?';
-    PLAYLIST_URL = 'https://www.googleapis.com/youtube/v3/playlistItems?';
-    VIDEO_URL = 'https://www.googleapis.com/youtube/v3/videos?';
+    private readonly CHANNELS_URL = 'https://www.googleapis.com/youtube/v3/channels?';
+    private readonly PLAYLIST_URL = 'https://www.googleapis.com/youtube/v3/playlistItems?';
+    private readonly VIDEO_URL = 'https://www.googleapis.com/youtube/v3/videos?';
 
     constructor(private API_KEY: string) {
         // Checking if the API KEY provided is valid
-        const testChannelId = 'UCZU5ofyBsEmVuKYrijLFxrg';
-        const url = `${this.CHANNELS_URL}id=${testChannelId}&key=${this.API_KEY}`;
-        fetch(url)
+        const channelUrl = `${this.CHANNELS_URL}id=UCZU5ofyBsEmVuKYrijLFxrg&key=${this.API_KEY}`;
+        fetch(channelUrl)
             .then(response => response.json())
             .then(data => {
                 if(data.error){
-                    // console.error(data.error?.message)
-                    throw new Error(data.error?.message)
+                    Promise.reject(data.error?.message);
                 }else {
                     console.info('Connected to Youtube API successfully');
                 }
@@ -27,33 +29,52 @@ export class Youtube {
 
     }
 
-    getData(url: string): Promise<contentDetails> {
-        return fetch(url)
+    /**
+     * Get Channel Data or Test the API
+     * @param {string} channelUrl The specific fetching Url with API_KEY
+     * @returns {Promise<?contentDetails>}
+     * @example
+     */
+
+    private getData(channelUrl: string): Promise<contentDetails> {
+        return fetch(channelUrl)
             .then((response: { json: () => any; }) => response.json())
             .then(data => {
                 if (data.pageInfo.totalResults === 0) {
-                    // console.error(data.error?.message)
                     return Promise.reject(new Error(`Wrong ID`))
-                    // throw new Error(`Wrong ID`);
                 } else {
                     return data;
                 }
             });
     }
 
-    getList(url: string, pageToken?: string): Promise<listDetails> {
-        return fetch(url + (pageToken ? `&pageToken=${pageToken}` : ''))
+    /**
+     * Get Video List Max 50 per request
+     * @param {string} channelUrl The specific fetching Url with API_KEY
+     * @param {string} pageToken The code for a specific set of videos
+     * @returns {Promise<?listDetails>}
+     * @example
+     */
+
+    private getList(channelUrl: string, pageToken?: string): Promise<listDetails> {
+        return fetch(channelUrl + (pageToken ? `&pageToken=${pageToken}` : ''))
             .then((response: { json: () => any; }) => response.json())
             .then(data => {
                 if(data.error){
-                    // console.error(data.error?.message)
-                    return Promise.reject(new Error(data.error?.message))
+                    return Promise.reject(new Error(data.error.message))
                 }else {
                     return data;
                 }
             })
     }
 
+    /**
+     * Get Video List Max 50 per request
+     * @param {Array} videos The array all the videos are appended to
+     * @param {Array} listDetails The array of Video List, MAX=50
+     * @returns {Promise<?Array>}
+     * @example
+     */
     async getVideos(videos: [videoDetails], listDetails: listDetails) {
         await Promise.all(listDetails.items.map( async data =>{
             const video_id = data.snippet?.resourceId?.videoId;
@@ -63,53 +84,67 @@ export class Youtube {
         }));
     }
 
+    /**
+     * Get channel Details by ID
+     * @param {string} channel_id The channel ID
+     * @returns {Promise<?channelDetails>}
+     * @example
+     */
 
-    async channelDetails(channel_id: string): Promise<channelDetails> {
+    public async channelDetails(channel_id: string): Promise<channelDetails> {
+
         console.info('Fetching Channel Information...')
 
-        // const channel_id = 'UCWphVpAsuxyZLw-u9b5A3Gg';
-      const url = `${this.CHANNELS_URL}id=${channel_id}&part=contentDetails,snippet,statistics&key=${this.API_KEY}`;
-        console.log(url)
-      const data: contentDetails = await this.getData(url);
-      return  {
+        const channelUrl = `${this.CHANNELS_URL}id=${channel_id}&part=contentDetails,snippet,statistics&key=${this.API_KEY}`;
+        const data: contentDetails = await this.getData(channelUrl);
+        return  {
         title: data.items[0]?.snippet?.localized?.title,
         thumbnails: data.items[0]?.snippet?.thumbnails,
         country: data.items[0]?.snippet?.country,
         uploads_id: data.items[0]?.contentDetails?.relatedPlaylists?.uploads,
         statistics: data.items[0]?.statistics,
-      };
-      // console.log(content);
+        };
     }
 
-    // videos list
-    async videosList (uploads_id: string ,videos: [videoDetails]): Promise<[videoDetails]>  {
+
+    /**
+     * Get Channel videos By channel Uploads ID
+     * @param {string} uploads_id The channel Uploads ID
+     * @param {Array} videos an empty array
+     * @returns {Promise<?videoDetails>}
+     * @example
+     */
+
+    public async videosList (uploads_id: string ,videos: [videoDetails]): Promise<[videoDetails]>  {
         console.info('Fetching Video List...')
 
-        // const uploads_id = 'UU8butISFwT-Wl7EV0hUK0BQ'
-        const url3 = `${this.PLAYLIST_URL}playlistId=${uploads_id}&part=snippet&maxResults=50&key=${this.API_KEY}`
-        console.log(url3)
+        const listUrl = `${this.PLAYLIST_URL}playlistId=${uploads_id}&part=snippet&maxResults=50&key=${this.API_KEY}`
 
-        let listDetails: listDetails = await this.getList(url3);
+        let listDetails: listDetails = await this.getList(listUrl);
 
         await this.getVideos(videos, listDetails);
         console.info(`Fetching videos in progress... ${videos.length} videos fetched`)
 
         while (listDetails.nextPageToken) {
-            listDetails = await this.getList(url3, listDetails.nextPageToken);
+            listDetails = await this.getList(listUrl, listDetails.nextPageToken);
             await this.getVideos(videos, listDetails);
             console.info(`Fetching videos in progress... ${videos.length} videos fetched`)
         }
-
+        console.info('Videos fetched successfully');
         return videos;
-        // console.log(url3)
-        // console.log(videos)
     }
 
-    async videoInfo (video_id: string): Promise<videoDetails> {
-        console.info('Fetching Video Information...')
-        const url2 = `${this.VIDEO_URL}part=snippet,statistics,contentDetails&id=${video_id}&key=${this.API_KEY}`;
-        console.log(url2)
-        const data = await this.getData(url2);
+    /**
+     *
+     * Get Video Details by ID
+     * @param {string} video_id The Video ID
+     * @returns {Promise<?videoDetails>}
+     * @example
+     */
+
+    public async videoInfo (video_id: string): Promise<videoDetails> {
+        const videoUrl = `${this.VIDEO_URL}part=snippet,statistics,contentDetails&id=${video_id}&key=${this.API_KEY}`;
+        const data = await this.getData(videoUrl);
         return {
             title: data.items[0]?.snippet?.title,
             video_id: video_id,

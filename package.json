@@ -1,6 +1,6 @@
 {
   "name": "tube-api",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Youtube Api v3 Wrapper, Channel Details, Videos List and Video Details",
   "main": "./build/index.js",
   "types": "./build/index.d.ts",

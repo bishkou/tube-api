@@ -64,7 +64,7 @@ console.log(details);
     }
   },
   country: 'US',
-  uploads_id: 'UU8butISFwT-Wl7EV0hUK0BQ',
+  uploads_id: 'UU8butISFwT-Wl7EV0hUK0BQ', // The Id we use to get the list of videos on this channel
   statistics: {
     viewCount: '177010008',
     subscriberCount: '3480000',
@@ -88,6 +88,9 @@ import { Youtube } from 'tube-api';
 const YOUTUBE_API_KEY = '' // your youtube_api_key
 const ytube = new Youtube(YOUTUBE_API_KEY);
 
+/** We first need to fetch the channel details to get the uploads_id **/
+
+
 /**
  * @param {string} channelId 
  * @example
@@ -96,6 +99,7 @@ const ytube = new Youtube(YOUTUBE_API_KEY);
  */
 const details = await ytube.channelDetails('UCn8zNIfYAQNdrFRrr8oibKw');
 
+/** Now we use the uploads_id from the channelDetails result **/
 
 /**
  * @param {string} uploads_id Taken from the channelDetails result

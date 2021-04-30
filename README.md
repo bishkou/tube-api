@@ -14,10 +14,6 @@
   </a>
 </p>
 
-* **Check a Password against 613,584,246 real world passwords previously exposed in data breaches.**
-
-* **Check if a Password has been leaked before**
-* **Check if a Password is Strong**
 
 
 ### 🏠 [Homepage](https://github.com/bishkou/tube-api)

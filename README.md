@@ -15,6 +15,10 @@
 </p>
 
 
+* **YOU NEED A YOUTUBE_API_KEY from Google Developers Console**
+* **Fetch Channel Details by Channel ID.**
+* **Fetch a Channel's video list by uploads_id**
+* **Fetch Video Details by Video ID**
 
 ### 🏠 [Homepage](https://github.com/bishkou/tube-api)
 

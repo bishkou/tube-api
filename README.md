@@ -200,8 +200,6 @@ const video = await this.yt.videoInfo('RBSGKlAvoiM');
 
 ```
 
-## HOW DOES THIS WORK
-
 
 ## Author
 

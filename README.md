@@ -34,7 +34,7 @@ npm i tube-api
 /** channelDetails fetchs the api for channel info **/
 import { Youtube } from 'tube-api';
 
-const YOUTUBE_API_KEY = '' // your youtube_api_key
+const YOUTUBE_API_KEY = 'MY_YOUTUBE_API_KEY' // your youtube_api_key
 const ytube = new Youtube(YOUTUBE_API_KEY);
 
 

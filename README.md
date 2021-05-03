@@ -153,7 +153,7 @@ const ytube = new Youtube(YOUTUBE_API_KEY);
  * Video URL: https://www.youtube.com/watch?v=RBSGKlAvoiM
  * videoId is RBSGKlAvoiM 
  */
-const video = await this.yt.videoInfo('RBSGKlAvoiM');
+const video = await ytube.videoInfo('RBSGKlAvoiM');
 
 
 /**
